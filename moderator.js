@@ -7,7 +7,7 @@ const perspective = new Perspective({
 
 
 const treshhold = 0.75;
-const spamThreshhold = 0.50;
+const spamThreshhold = 0.70;
 
 async function evaluateMessage(message) {
     try {
@@ -56,7 +56,7 @@ client.on('message', async (message) => {
         message.reply('This is a christian server. Don\'t be stupid.')
             .then(msg => {
                 msg.delete({
-                    timeout: 3000
+                    timeout: 8000
                 });
             });
         return;
@@ -64,5 +64,26 @@ client.on('message', async (message) => {
 
 
 })
+
+client.on('messageUpdate', async (oldMessage, newMessage) => {
+    if (!newMessage.guild || newMessage.author.bot) return;
+    let detected = false;
+    try {
+        detected = await evaluateMessage(newMessage.content);
+    } catch (err) {
+        console.log(err);
+    }
+
+    if (detected) {
+        newMessage.delete();
+        newMessage.reply('This is a christian server. Don\'t be stupid.')
+            .then(msg => {
+                msg.delete({
+                    timeout: 8000
+                });
+            });
+        return;
+    }
+});
 
 client.login(process.env.DISCORD_TOKEN);
