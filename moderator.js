@@ -7,7 +7,7 @@ const perspective = new Perspective({
 
 
 const treshhold = 0.75;
-const spamThreshhold = 0.70;
+const spamThreshhold = 0.99;
 
 async function evaluateMessage(message) {
     try {
